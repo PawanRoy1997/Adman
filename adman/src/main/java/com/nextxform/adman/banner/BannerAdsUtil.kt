@@ -8,7 +8,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
-import com.nextxform.adman.banner.Constants.TestIds.BANNER
+import com.nextxform.adman.Constants.TestIds.BANNER_TEST_ID
 
 abstract class BannerAdsUtil {
     private lateinit var type: BannerAdTypeInterface
@@ -31,13 +31,14 @@ abstract class BannerAdsUtil {
 
     abstract fun logEvent(event: String): Unit
 
+
     fun refreshAll() {
         loadAllAds(baseActivity)
     }
 
     fun load(baseActivity: Activity, banAd: BannerAdTypeInterface) {
         if (banAd.isLoaded) return
-        val adUnit = if (isDebug()) Constants.TestIds.BANNER else banAd.id()
+        val adUnit = if (isDebug()) BANNER_TEST_ID else banAd.id()
         val adView = AdView(baseActivity).apply {
             this.tag = banAd.tag()
             this.setAdSize(defaultAdSize)
@@ -88,7 +89,7 @@ abstract class BannerAdsUtil {
     }
 
     private fun setAdsAttribute(adView: AdView, adUnit: String) {
-        adView.adUnitId = if (isDebug()) BANNER else adUnit
+        adView.adUnitId = if (isDebug()) BANNER_TEST_ID else adUnit
         loadAds(adView)
     }
 
