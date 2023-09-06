@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.nextxform.adman"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 16
@@ -38,8 +38,9 @@ afterEvaluate{
     publishing{
         publications {
             create<MavenPublication>("maven"){
+                from(components["release"])
                 groupId = "com.github.PawanRoy1997"
-                artifactId = "adman"
+                artifactId = "Adman"
                 version = "1.0.0"
             }
         }
