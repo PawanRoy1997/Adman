@@ -9,6 +9,7 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.nextxform.adman.Constants
 import kotlin.math.log
 
 abstract class InterstitialAdsUtil {
@@ -17,6 +18,8 @@ abstract class InterstitialAdsUtil {
     abstract fun logEvent(event: String): Unit
     abstract fun loadAllAds(): Unit
     abstract fun getApplication(): Application
+
+    abstract fun isDebug(): Boolean
 
     private fun assignAdInstance(type: InterstitialAdTypeInterface, loadedAd: InterstitialAd?) {
         if (loadedAd == null) {
@@ -28,8 +31,8 @@ abstract class InterstitialAdsUtil {
         type.interstitialAd = loadedAd
     }
 
-    fun loadIntAd(type: InterstitialAdTypeInterface) {
-        var adUnitId = type.getAdUnitId()
+    private fun loadIntAd(type: InterstitialAdTypeInterface) {
+        val adUnitId = if(isDebug()) Constants.TestIds.INTERSTITIAL else type.getAdUnitId()
         InterstitialAd.load(
             getApplication(),
             adUnitId,
@@ -90,11 +93,11 @@ abstract class InterstitialAdsUtil {
         }
     }
 
-    fun showAd(type: InterstitialAdTypeInterface, activity: Activity){
-        type.interstitialAd?.show(activity)?: requestAd(type)
+    fun showAd(type: InterstitialAdTypeInterface, activity: Activity) {
+        type.interstitialAd?.show(activity) ?: requestAd(type)
     }
 
-    fun requestAd(type:InterstitialAdTypeInterface){
+    fun requestAd(type: InterstitialAdTypeInterface) {
         loadIntAd(type)
     }
 }
