@@ -104,6 +104,7 @@ abstract class BannerAdsUtil {
     }
 
     fun requestAdOfType(tag: BannerAdTypeInterface): BannerAdsUtil {
+        adsRequest = AdRequest.Builder().build()
         type = tag
         return this
     }
