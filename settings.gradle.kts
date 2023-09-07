@@ -17,4 +17,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "AdMan"
 include(":adman")
-include(":myapplication")
+//include(":myapplication")

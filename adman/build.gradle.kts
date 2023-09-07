@@ -42,7 +42,7 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.PawanRoy1997"
                 artifactId = "Adman"
-                version = "1.0.1"
+                version = "1.0.0"
             }
         }
     }
