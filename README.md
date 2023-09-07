@@ -21,7 +21,7 @@ In project build.gradle
 
 ```groovy
 dependencies {
-    implementation 'com.github.PawanRoy1997:Adman:1.0.1'
+    implementation 'com.github.PawanRoy1997:Adman:1.0.0'
 }
 ```
 
