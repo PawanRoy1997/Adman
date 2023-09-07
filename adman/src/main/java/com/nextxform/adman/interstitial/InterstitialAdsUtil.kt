@@ -2,6 +2,8 @@ package com.nextxform.adman.interstitial
 
 import android.app.Activity
 import android.app.Application
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdRequest.*
@@ -10,6 +12,7 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.nextxform.adman.Constants
+import com.pawanroy1997.versionchecker.Checker
 import kotlin.math.log
 
 abstract class InterstitialAdsUtil {
@@ -20,6 +23,8 @@ abstract class InterstitialAdsUtil {
     abstract fun getApplication(): Application
 
     abstract fun isDebug(): Boolean
+
+    private lateinit var activity: Activity
 
     private fun assignAdInstance(type: InterstitialAdTypeInterface, loadedAd: InterstitialAd?) {
         if (loadedAd == null) {
@@ -32,7 +37,7 @@ abstract class InterstitialAdsUtil {
     }
 
     private fun loadIntAd(type: InterstitialAdTypeInterface) {
-        val adUnitId = if(isDebug()) Constants.TestIds.INTERSTITIAL else type.getAdUnitId()
+        val adUnitId = if (isDebug()) Constants.TestIds.INTERSTITIAL else type.getAdUnitId()
         InterstitialAd.load(
             getApplication(),
             adUnitId,
@@ -44,9 +49,14 @@ abstract class InterstitialAdsUtil {
                     logEvent("AdLoadFailed")
                 }
 
+                @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
                 override fun onAdLoaded(p0: InterstitialAd) {
                     super.onAdLoaded(p0)
                     assignAdInstance(type, p0)
+                    logEvent("AdLoaded")
+                    if (Checker.isBelowJELLY_BEAN_MR1) return
+                    if (activity.isFinishing || activity.isDestroyed) return
+                    showAd(type, activity)
                 }
             })
     }
@@ -94,6 +104,7 @@ abstract class InterstitialAdsUtil {
     }
 
     fun showAd(type: InterstitialAdTypeInterface, activity: Activity) {
+        this.activity = activity
         type.interstitialAd?.show(activity) ?: requestAd(type)
     }
 
