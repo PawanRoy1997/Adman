@@ -54,7 +54,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
-    implementation("com.google.android.gms:play-services-ads-lite:22.4.0")
+    implementation("com.google.android.gms:play-services-ads-lite:22.3.0")
     implementation("com.github.PawanRoy1997:VersionChecker:2.0.0")
     implementation("androidx.multidex:multidex:2.0.1")
     testImplementation("junit:junit:4.13.2")
