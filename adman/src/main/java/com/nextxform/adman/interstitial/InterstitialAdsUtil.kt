@@ -2,6 +2,7 @@ package com.nextxform.adman.interstitial
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.android.gms.ads.AdError
@@ -15,13 +16,11 @@ import com.nextxform.adman.Constants
 import com.pawanroy1997.versionchecker.Checker
 import kotlin.math.log
 
-abstract class InterstitialAdsUtil {
+abstract class InterstitialAdsUtil(private val context: Context) {
     private var adRequest: AdRequest = Builder().build()
 
     abstract fun logEvent(event: String): Unit
     abstract fun loadAllAds(): Unit
-    abstract fun getApplication(): Application
-
     abstract fun isDebug(): Boolean
 
     private lateinit var activity: Activity
@@ -39,7 +38,7 @@ abstract class InterstitialAdsUtil {
     private fun loadIntAd(type: InterstitialAdTypeInterface) {
         val adUnitId = if (isDebug()) Constants.TestIds.INTERSTITIAL else type.getAdUnitId()
         InterstitialAd.load(
-            getApplication(),
+            context,
             adUnitId,
             adRequest,
             object : InterstitialAdLoadCallback() {
@@ -49,14 +48,12 @@ abstract class InterstitialAdsUtil {
                     logEvent("AdLoadFailed")
                 }
 
-                @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
                 override fun onAdLoaded(p0: InterstitialAd) {
                     super.onAdLoaded(p0)
                     assignAdInstance(type, p0)
                     logEvent("AdLoaded")
                     if (Checker.isBelowJELLY_BEAN_MR1) return
                     if (activity.isFinishing || activity.isDestroyed) return
-                    showAd(type, activity)
                 }
             })
     }
